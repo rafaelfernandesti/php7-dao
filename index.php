@@ -9,9 +9,23 @@ require_once("config.php");
 //echo json_encode($usuarios);
 
 
-//Segundo teste com classe Usuario
+//Segundo teste com classe Usuario para carregar um usuário apenas
+//$usuario = new Usuario();
+//$usuario->carregarPorId(1);
+//echo $usuario;
 
+//Terceiro teste carregando uma lista de usuários
+//$lista = Usuario::getLista();
+//print_r($lista);
+
+//Quarto teste carregando lista de usuaários buscando login
+//$busca = Usuario::procuraUsuario("ro");
+//echo json_encode($busca);
+
+
+//Quinto teste de login e senha válidos
 $usuario = new Usuario();
-$usuario->carregarPorId(1);
+$usuario->logar("root","12345");
+
 echo $usuario;
  ?>

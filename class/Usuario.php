@@ -57,6 +57,34 @@ class Usuario{
 		));
 	}
 
+	public static function getLista(){ //usando o estático não precisaremos estanciar este objeto
+		$sql = new Sql();
+		return $sql->select("SELECT * FROM tb_usuarios ORDER BY deslogin;");
+	}
+
+	public static function procuraUsuario($login){
+		$sql = new Sql();
+		return $sql->select("SELECT * FROM tb_usuarios WHERE deslogin LIKE :PROCURADO ORDER BY idusuario", array(":PROCURADO"=>"%".$login."%"));
+
+	}
+
+	public function logar($login, $senha){
+		$sql = new Sql();
+		$rs = $sql->select("SELECT * FROM tb_usuarios WHERE deslogin = :LOGIN AND dessenha = :SENHA", array(
+			":LOGIN"=>$login,
+			":SENHA"=>$senha
+		)); //
+		if(count($rs) > 0){
+			$linha = $rs[0];
+			$this->setIdusuario($linha['idusuario']);
+			$this->setDeslogin($linha['deslogin']);
+			$this->setDessenha($linha['dessenha']);
+			$this->setDtcadastro(new DateTime($linha['dtcadastro']));
+		}else{
+			throw new Exception("Login/senha inválidos");
+		}
+	}
+
 }
 
  ?>
