@@ -9,16 +9,17 @@ class Sql extends PDO{
 
 	private function setParams($statement, $parametros =array()){
 		foreach($parametros as $key => $value){
-				$this->setParam($key, $value);
+				$this->setParam($statement, $key, $value);
 		} //associação dos parâmetros
 	}
 
 	private function setParam($statement, $chave, $valor){
-		$statement->bindParam($key, $value);
+		$statement->bindParam($chave, $valor);
 
 	}
 
 	public function query($rawQuery, $params = array()){ //$rawQuery = queryBruta ou comando SQL em si... os parametros serão uma array com os dados recebidos.
+		//echo $rawQuery."<br>";
 		$stmt = $this->conexao->prepare("$rawQuery");
 		//criação do statement
 
