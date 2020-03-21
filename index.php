@@ -24,8 +24,24 @@ require_once("config.php");
 
 
 //Quinto teste de login e senha válidos
+//$usuario = new Usuario();
+//$usuario->logar("root","12345");
+//echo $usuario;
+
+/*Teste 6 - Inserção de dados
+$aluno = new Usuario();
+$aluno->setDeslogin("alunos");
+$aluno->setDessenha("@lun0s");
+
+$aluno->inserir();
+
+echo $aluno;
+*/
+
+//Teste 7 - Update de dados
 $usuario = new Usuario();
-$usuario->logar("root","12345");
+$usuario->carregarPorId(4);
+$usuario->atualizar("professor","novaSenha");
 
 echo $usuario;
  ?>

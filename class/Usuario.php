@@ -1,12 +1,14 @@
 <?php 
 
 class Usuario{
+	//atributos constantes na tabela tb_usuarios
 	private $idusuario;
 	private $deslogin;
 	private $dessenha;
 	private $dtcadastro;
-	//atributos constantes na tabela tb_usuarios
+	
 
+	//getters e setters para cada um dos atributos.
 	public function getIdusuario(){
 		return $this->idusuario;
 	}
@@ -31,7 +33,8 @@ class Usuario{
 	public function setDtcadastro($value){
 		$this->dtcadastro = $value;
 	}
-	//getters e setters para cada um dos atributos.
+	
+
 	public function carregarPorId($id){
 		$sql = new Sql();
 		$rs = $sql->select("SELECT * FROM tb_usuarios WHERE idusuario = :ID", array(":ID"=>$id)); //não está funcionando por alguma razão desconhecida... o array associativo parece estar ok, certo?
@@ -40,11 +43,7 @@ class Usuario{
 		//retornará um array de arrays com todos os dados selecionados.
 		if(count($rs) > 0){
 		//if(isset($rs[0])){ //validar se há registros. Também poderia ser feito um if(count($rs) > 0)
-			$linha = $rs[0];
-			$this->setIdusuario($linha['idusuario']);
-			$this->setDeslogin($linha['deslogin']);
-			$this->setDessenha($linha['dessenha']);
-			$this->setDtcadastro(new DateTime($linha['dtcadastro']));
+			$this->setDados($rs[0]); 
 		}
 	}
 
@@ -75,14 +74,39 @@ class Usuario{
 			":SENHA"=>$senha
 		)); //
 		if(count($rs) > 0){
-			$linha = $rs[0];
-			$this->setIdusuario($linha['idusuario']);
-			$this->setDeslogin($linha['deslogin']);
-			$this->setDessenha($linha['dessenha']);
-			$this->setDtcadastro(new DateTime($linha['dtcadastro']));
+			$this->setDados($rs[0]); 
 		}else{
 			throw new Exception("Login/senha inválidos");
 		}
+	}
+
+	public function setDados($dados){
+		$this->setIdusuario($dados['idusuario']);
+		$this->setDeslogin($dados['deslogin']);
+		$this->setDessenha($dados['dessenha']);
+		$this->setDtcadastro(new DateTime($dados['dtcadastro']));
+	}
+
+	public function inserir(){
+		$sql = new Sql();
+		$rs = $sql->select("CALL sp_usuarios_insert(:LOGIN, :SENHA)",array(
+			':LOGIN'=>$this->getDeslogin(),
+			':SENHA'=>$this->getDessenha()
+		));
+		if(count($rs) > 0){
+			$this->setDados($rs[0]);
+		}
+	}
+
+	public function atualizar($login, $senha){
+		$this->setDeslogin($login);
+		$this->setDessenha($senha);
+		$sql = new Sql();
+		$sql->query("UPDATE tb_usuarios SET deslogin = :LOGIN, dessenha = :PASS WHERE idusuario = :ID", array(
+			':LOGIN' => $this->getDeslogin(), 
+			':PASS' => $this->getDessenha(),
+			':ID' => $this->getIdusuario()
+		));
 	}
 
 }
