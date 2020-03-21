@@ -38,10 +38,19 @@ $aluno->inserir();
 echo $aluno;
 */
 
-//Teste 7 - Update de dados
+/*Teste 7 - Update de dados
 $usuario = new Usuario();
 $usuario->carregarPorId(4);
 $usuario->atualizar("professor","novaSenha");
 
 echo $usuario;
+*/
+
+//Teste 8 - Deletar
+$usuario = new Usuario();
+$usuario->carregarPorId(4);
+$usuario->deletar();
+echo $usuario;
+
+
  ?>
